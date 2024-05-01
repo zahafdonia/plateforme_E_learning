@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="shortcut icon" type="png" href="images/icon/iteam.jpg">
+	<title>Login SignUp</title>
+	<link rel="stylesheet" type="text/css" href="loginStyle.css">
+	
+
+</head>
+<body>
+		<div class="form-box">
+			<div class="button-box">	
+				<button type="button" class="toggle-btn" id="log" >student</button> 
+				<button type="button" class="toggle-btn1" id="reg" >former</button>
+				<button type="button" class="toggle-btn1" id="reg" >adherent</button>
+				<button type="button" class="toggle-btn1" id="reg" >expert</button>
+			</div>
+		
+			<div class="social-icons">
+				<img src="images/icon/fb2.png" >
+				<img src="images/icon/insta2.png">
+				<img src="images/icon/tt2.png">
+			</div>
+			
+			<!-- Login Form -->
+			<form id="login" class="input-group" action="index.html">
+				<div class="inp">
+					<img src="images/icon/user.png"><input type="text" id="email" class="input-field" placeholder="Username or Phone Number" style="width: 88%; border:none;" required="required">
+				</div>
+				<div class="inp">
+					<img src="images/icon/password.png"><input type="password" id="password" class="input-field" placeholder="Password" style="width: 88%; border: none;" required="required">
+				</div>
+				<input type="checkbox" class="check-box">Remember Password
+				<button type="submit" class="submit-btn">Log In</button>
+			</form>
+
+
+			<div class="other" id="other">
+				<div class="instead">
+					<h3>or</h3>
+				</div>
+				<button class="connect">
+					<img src="images/icon/google.png"><span>Sign in with Google</span>
+				</button>
+			</div>
+
+		</div>
+</body>
+</html>
+
+// Fonction appelée lors du clic sur le bouton de connexion Google
+function onGoogleSignIn() {
+    // Paramètres de configuration de l'authentification Google
+    var googleAuthConfig = {
+        client_id: '881572994945-766mpaojjgig67rhp3j4efr3kfp0aeel.apps.googleusercontent.com',
+        scope: 'email profile', // Les autorisations requises
+        prompt: 'select_account' // Permet de sélectionner le compte Google à utiliser, même s'il est déjà connecté
+    };
+
+    // Appel de la fonction Google pour initier l'authentification
+    gapi.auth2.init(googleAuthConfig).then(function(auth2) {
+        // Récupération de l'instance d'authentification
+        var googleAuth = gapi.auth2.getAuthInstance();
+
+        // Demande de connexion Google
+        googleAuth.signIn().then(function(googleUser) {
+            // Succès de la connexion, récupération des informations utilisateur
+            var profile = googleUser.getBasicProfile();
+            var userEmail = profile.getEmail();
+            var userName = profile.getName();
+
+            // Vous pouvez maintenant utiliser les informations utilisateur pour la connexion à votre application
+            // Par exemple, vous pouvez envoyer ces informations à votre serveur pour créer une session utilisateur
+            // ou les utiliser pour afficher des informations sur l'utilisateur connecté dans votre application.
+
+            // Redirection vers la page d'accueil de votre application après la connexion réussie
+            window.location.href = 'index.html';
+        }).catch(function(error) {
+            // Erreur lors de la connexion Google
+            console.error('Erreur de connexion Google:', error);
+        });
+    });
+}
+
+// Fonction appelée lors du chargement de la page
+function init() {
+    // Chargement de l'API JavaScript de Google
+    gapi.load('auth2', function() {
+        // Initialisation de l'API
+        gapi.auth2.init();
+    });
+}
